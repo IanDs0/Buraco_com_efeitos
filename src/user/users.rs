@@ -50,18 +50,13 @@ impl User{
         self.hp = self.hp + health;
     }
     pub fn damage_hp(&mut self, damage: u16) {
-        self.hp = if (self.hp - damage) >= 0{
-            self.hp - damage
-        } else {
-            0
-        }
+        self.hp = std::cmp::min(
+            (self.hp as i16 - damage as i16) 
+            as u16, 0
+        );
     }
     fn set_hp(&mut self, hp: u16) {
-        self.hp = if hp >= 0 {
-            hp
-        } else {
-            0
-        };
+        self.hp = hp;
     }
     pub fn get_hp(&self) -> u16 {
         self.hp

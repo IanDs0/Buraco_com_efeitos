@@ -32,13 +32,11 @@ fn main() {
     user.set_user(
         "Ian".to_string(),
         10,
-        5,
+        10,
         vec_carta
     );
 
     user.print_user();
 
-    let mut damage: u16 = 6;
-
-    user.damage_hp(damage);
+    user.damage_hp(11);
 }
