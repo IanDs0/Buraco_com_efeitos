@@ -1,12 +1,12 @@
 extern crate rand;
 
-use crate::carta::enums::Nipe;
-use crate::carta::enums::Efeito;
+use crate::enums::nipe::Nipe;
+use crate::enums::efeito::Efeito;
 
 use rand::Rng;
 use std::fmt;
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct Carta {
     nipe: Nipe,
     numero: u32,
@@ -32,7 +32,7 @@ impl Carta {
                 _ => return Err(String::from("nipe invalido")),
             },
             
-            numero: if numero > 0 || numero < 14 { 
+            numero: if numero > 0 && numero < 14 { 
                 numero
             } else { 
                 return Err(String::from("Numero de carta invalido"));

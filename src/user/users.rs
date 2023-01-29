@@ -2,6 +2,7 @@ use crate::carta::cartas::Carta;
 
 use std::vec::Vec;
 
+#[derive(Clone)]
 pub struct User{
     name: String,
     points: i32,
@@ -18,12 +19,22 @@ impl User{
             cards: Vec::new(),
         }
     }
+    
     //User
     pub fn set_user(&mut self ,name: String, points: i32, hp: u16, cards: Vec<Carta>) {
         Self::set_name(self, name.to_string());
         Self::set_points(self, points);
         Self::set_hp(self, hp);
         Self::set_card(self, cards);
+    }
+
+    pub fn get_user(&self) -> (String, i32, u16, Vec<Carta>) {
+        (
+            self.get_name(),
+            self.get_points(),
+            self.get_hp(),
+            self.get_card(),
+        )
     }
 
     pub fn print_user(&self){
@@ -50,10 +61,10 @@ impl User{
         self.hp = self.hp + health;
     }
     pub fn damage_hp(&mut self, damage: u16) {
-        self.hp = std::cmp::min(
-            (self.hp as i16 - damage as i16) 
-            as u16, 0
-        );
+        self.hp = std::cmp::max(
+            self.hp as i16 - damage as i16,
+            0
+        )as u16;
     }
     fn set_hp(&mut self, hp: u16) {
         self.hp = hp;
@@ -78,13 +89,13 @@ impl User{
     fn set_card(&mut self, card: Vec<Carta>) {
         self.cards = card;
     }
-    pub fn get_card(self) -> Vec<Carta>{
-        self.cards
+    pub fn get_card(&self) -> Vec<Carta>{
+        self.cards.clone()
     }
 
     pub fn print_card(&self){
         for (i,card) in self.cards.iter().enumerate(){
-            println!("{i} {card}");
+            println!("{i} {:?}", card.get_carta());
         }
     }
 
