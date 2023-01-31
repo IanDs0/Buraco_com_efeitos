@@ -1,12 +1,12 @@
 use std::fmt;
 use std::clone::Clone;
 
-#[derive(Clone,Debug)]
-pub enum Efeito{
-    Comum(String),
-    Raro(String),
-    Lendario(String),
-    Exotico(String)
+#[derive(Clone,Copy,Debug)]
+pub enum Efeito {
+    Comum(&'static str),
+    Raro(&'static str),
+    Lendario(&'static str),
+    Exotico(&'static str),
 }
 
 impl fmt::Display for Efeito {

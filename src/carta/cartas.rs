@@ -6,7 +6,7 @@ use crate::enums::efeito::Efeito;
 use rand::Rng;
 use std::fmt;
 
-#[derive(Clone,Debug)]
+#[derive(Clone,Copy,Debug)]
 pub struct Carta {
     nipe: Nipe,
     numero: u32,
@@ -25,10 +25,10 @@ impl Carta {
         
         let card = Carta {
             nipe: match nipe.as_str(){
-                "Espadas" => Nipe::Espadas(String::from("♠")),
-                "Paus" => Nipe::Paus(String::from("♣")),
-                "Copas" => Nipe::Copas(String::from("♥")),
-                "Ouro" => Nipe::Ouro(String::from("♦")),
+                "Espadas" => Nipe::Espadas("♠"),
+                "Paus" => Nipe::Paus("♣"),
+                "Copas" => Nipe::Copas("♥"),
+                "Ouro" => Nipe::Ouro("♦"),
                 _ => return Err(String::from("nipe invalido")),
             },
             
@@ -41,7 +41,7 @@ impl Carta {
             efeito: if efeito { 
                 Self::rand_efect()
             } else { 
-                Efeito::Comum(String::from("#98dafb"))
+                Efeito::Comum("#98dafb")
             }
         };
 
@@ -54,13 +54,13 @@ impl Carta {
         let rng = rand::thread_rng().gen_range(0..100);
 
         if rng == 0 {// 1%
-            return Efeito::Exotico(String::from("#f0ed88"));
+            return Efeito::Exotico("#f0ed88");
         } else if rng >= 1 && rng <= 10 {// 10%
-            return Efeito::Lendario(String::from("#f859ff"));
+            return Efeito::Lendario("#f859ff");
         } else if rng >= 11 && rng <=30 {// 20%
-            return Efeito::Raro(String::from("#01c96d"));
+            return Efeito::Raro("#01c96d");
         }else {// 69%
-            return Efeito::Comum(String::from("#98dafb"));
+            return Efeito::Comum("#98dafb");
         }
         
     }

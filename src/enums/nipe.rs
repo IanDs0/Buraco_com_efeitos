@@ -1,12 +1,12 @@
 use std::fmt;
 use std::clone::Clone;
 
-#[derive(Clone,Debug)]
+#[derive(Clone,Copy,Debug)]
 pub enum Nipe {
-    Espadas(String),
-    Paus(String),
-    Copas(String),
-    Ouro(String)
+    Espadas(&'static str),
+    Paus(&'static str),
+    Copas(&'static str),
+    Ouro(&'static str)
 }
 
 impl fmt::Display for Nipe {

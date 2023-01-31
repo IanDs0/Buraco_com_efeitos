@@ -2,12 +2,13 @@ use crate::carta::cartas::Carta;
 
 use std::vec::Vec;
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct User{
     name: String,
     points: i32,
     hp: u16,
     cards: Vec<Carta>,
+    lixo: Vec<Carta>
 }
 
 impl User{
@@ -17,23 +18,26 @@ impl User{
             points: 0,
             hp: 0,
             cards: Vec::new(),
+            lixo: Vec::new(),
         }
     }
     
     //User
-    pub fn set_user(&mut self ,name: String, points: i32, hp: u16, cards: Vec<Carta>) {
+    pub fn set_user(&mut self ,name: String, points: i32, hp: u16, cards: Vec<Carta>, lixo: Vec<Carta>) {
         Self::set_name(self, name.to_string());
         Self::set_points(self, points);
         Self::set_hp(self, hp);
         Self::set_card(self, cards);
+        Self::set_lixo(self, lixo);
     }
 
-    pub fn get_user(&self) -> (String, i32, u16, Vec<Carta>) {
+    pub fn get_user(&self) -> (String, i32, u16, Vec<Carta>, Vec<Carta>) {
         (
             self.get_name(),
             self.get_points(),
             self.get_hp(),
             self.get_card(),
+            self.get_lixo()
         )
     }
 
@@ -71,6 +75,21 @@ impl User{
     }
     pub fn get_hp(&self) -> u16 {
         self.hp
+    }
+
+    //Lixo
+    fn set_lixo(&mut self, card: Vec<Carta>) {
+        self.lixo = card;
+    }
+    fn get_lixo(&self) -> Vec<Carta>{
+        self.lixo.clone()
+    }
+    pub fn pegar_lixo(&mut self) -> Result<Self,String>{
+        if (self.lixo.len()>0){
+            self.cards.+=(self.lixo);
+            self.lixo.clear();
+            Ok(sel)
+        }
     }
 
     //Cards
