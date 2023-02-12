@@ -2,15 +2,39 @@ extern crate rand;
 
 use crate::enums::nipe::Nipe;
 use crate::enums::efeito::Efeito;
+use std::cmp::Ordering;
 
 use rand::Rng;
 use std::fmt;
 
-#[derive(Clone,Copy,Debug)]
+#[derive(Clone,Copy,Debug,Eq)]
 pub struct Carta {
     nipe: Nipe,
     numero: u32,
     efeito: Efeito
+}
+
+impl PartialEq for Carta {
+    fn eq(&self, other: &Self) -> bool {
+        self.nipe == other.nipe && self.numero == other.numero
+    }
+}
+
+impl Ord for Carta {
+    fn cmp(&self, other: &Self) -> Ordering {
+        let nipe_result = self.nipe.cmp(&other.nipe);
+        let numero_result = self.numero.cmp(&other.numero);
+        match (nipe_result, numero_result) {
+            (Ordering::Equal, Ordering::Equal) => Ordering::Equal,
+            (Ordering::Equal, numero_result) => numero_result,
+            (nipe_result, _) => nipe_result,
+        } 
+    }
+}
+impl PartialOrd for Carta {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
 }
 
 impl fmt::Display for Carta {
@@ -71,15 +95,6 @@ impl Carta {
             self.numero,
             self.efeito.clone()
         )
-    }
-
-    pub fn print_carta(&self){
-
-        println!("\tCarta");
-        println!("Nipe: {}", self.nipe);
-        println!("Numero: {}", self.numero);
-        println!("Efeito: {}", self.efeito);
-
     }
     
 }

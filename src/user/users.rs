@@ -8,7 +8,7 @@ pub struct User{
     points: i32,
     hp: u16,
     cards: Vec<Carta>,
-    lixo: Vec<Carta>
+    lixo: Vec<Carta>,
 }
 
 impl User{
@@ -36,7 +36,7 @@ impl User{
             self.get_name(),
             self.get_points(),
             self.get_hp(),
-            self.get_card(),
+            self.get_cards(),
             self.get_lixo()
         )
     }
@@ -63,7 +63,7 @@ impl User{
     //HP
     pub fn health_hp(&mut self, health: u16) {
         self.hp = self.hp + health;
-    }
+    }   
     pub fn damage_hp(&mut self, damage: u16) {
         self.hp = std::cmp::max(
             self.hp as i16 - damage as i16,
@@ -84,11 +84,13 @@ impl User{
     fn get_lixo(&self) -> Vec<Carta>{
         self.lixo.clone()
     }
-    pub fn pegar_lixo(&mut self) -> Result<Self,String>{
-        if (self.lixo.len()>0){
-            self.cards.+=(self.lixo);
+    pub fn pegar_lixo(&mut self) -> Result<String,String>{
+        if self.lixo.len() > 0{
+            self.cards.extend(Self::get_lixo(&self));
             self.lixo.clear();
-            Ok(sel)
+            Ok(String::from("O lixo voi pego"))
+        }else {
+            Err(String::from("O lixo ja foi pego"))
         }
     }
 
@@ -96,11 +98,10 @@ impl User{
     pub fn add_card(&mut self, card: Carta){
         self.cards.push(card);
     }
-    pub fn remove_card(&mut self, index: i32) -> Result<String,String>{
+    pub fn remove_card(&mut self, index: u32) -> Result<Carta,String>{
         
-        if index >=0 && (index as usize) < self.cards.len(){
-            self.cards.remove(index as usize);
-            Ok(String::from("removido"))
+        if (index as usize) < self.cards.len(){
+            Ok(self.cards.remove(index as usize))
         }else {
             Err(String::from("indice escolhido invalido"))
         }
@@ -108,13 +109,19 @@ impl User{
     fn set_card(&mut self, card: Vec<Carta>) {
         self.cards = card;
     }
-    pub fn get_card(&self) -> Vec<Carta>{
+    pub fn get_cards(&self) -> Vec<Carta>{
         self.cards.clone()
+    }
+    pub fn get_card(&mut self, index: u32) -> Result<Carta,String>{
+        if (index as usize) < self.cards.len() {
+            return Ok(self.cards[index as usize].clone());
+        }
+        Err(String::from("indice escolhido invalido"))
     }
 
     pub fn print_card(&self){
         for (i,card) in self.cards.iter().enumerate(){
-            println!("{i} {:?}", card.get_carta());
+            println!("{}->{:?}", i, card.get_carta());
         }
     }
 

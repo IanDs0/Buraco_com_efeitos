@@ -1,7 +1,7 @@
 use std::fmt;
 use std::clone::Clone;
 
-#[derive(Clone,Copy,Debug)]
+#[derive(Clone,Copy,Debug,Eq,PartialEq)]
 pub enum Efeito {
     Comum(&'static str),
     Raro(&'static str),
