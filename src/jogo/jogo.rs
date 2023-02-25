@@ -131,14 +131,13 @@ impl Jogo {
         }
 
     } 
-    pub fn down_3_cards_letter(&mut self,index: u32, cards: Vec<u32>) -> Result<[bool;5],String>{
+    pub fn down_3_cards_letter(&mut self,index: u32, cards: Vec<u32>) -> Result<[bool;4],String>{
 
         if (index as usize) < self.players.len(){
             if cards.iter().all(|card| *card < self.players[index as usize].get_cards().len() as u32) {
 
                 let mut analise:Vec<Carta> = Vec::new();
-                let mut num_de_dois: u32 = 0;
-                let mut options_push: [bool;5] = [false,false,false,false,false];
+                let mut options_push: [bool;4] = [false,false,false,false];
 
                 for i in cards {
                     match self.players[index as usize].get_card(i as u32) {
@@ -154,89 +153,74 @@ impl Jogo {
 
                 if analise[0].get_carta().0 == analise[1].get_carta().0 && analise[2].get_carta().0 == analise[1].get_carta().0{
                     
-                    if analise[1].get_carta().1 == analise[0].get_carta().1 && analise[2].get_carta().1 == analise[1].get_carta().1+1{
+                    if analise[1].get_carta().1 == analise[0].get_carta().1+1 && analise[2].get_carta().1 == analise[1].get_carta().1+1{
                         
-                        print!("\nsequencial\n");
+                        println!("sequence number\n");
                         options_push[0]=true;
                     
                     }
-                    if analise[0].get_carta().1 == 2 && 
-                        (analise[2].get_carta().1 == analise[1].get_carta().1+2 ||
-                         analise[2].get_carta().1 == analise[1].get_carta().1+1){
-
-                        print!("\n2+sequencial\n");
-                        options_push[1]=true;
                     
-                    }
-                    if (analise[1].get_carta().1 == analise[0].get_carta().1+2 ||
-                        analise[1].get_carta().1 == analise[0].get_carta().1+1) && 
-                        analise[2].get_carta().1 == 2{
+                    if  analise[0].get_carta().1 == 2 || analise[1].get_carta().1 == 2 || analise[2].get_carta().1 == 2{
 
-                        print!("\nsequencial+2\n");
-                        options_push[3]=true;
+                        if (analise[0].get_carta().1+1 == analise[1].get_carta().1) || (analise[1].get_carta().1+1 == analise[2].get_carta().1){
 
-                    }
-                    if analise[2].get_carta().1 == analise[0].get_carta().1+2 &&
-                      analise[1].get_carta().1 == 2{
-                        
-                        print!("\ncarta+2+carta\n");
-                        options_push[2]=true;
-                        
+                            if  (analise[0].get_carta().1 > 1) || (analise[1].get_carta().1 > 1){
+    
+                                println!("2 + sequence number\n");
+                                options_push[1]=true;
+    
+                            }
+                            
+                            if  (analise[0].get_carta().1 < 13) || (analise[1].get_carta().1 < 13){
+    
+                                println!("sequence number + 2\n");
+                                options_push[3]=true;
+                                    
+                            }
+                            
+                        } else if (analise[0].get_carta().1+2 == analise[1].get_carta().1) || (analise[1].get_carta().1+2 == analise[2].get_carta().1){
+    
+                            println!("number + 2 + number\n");
+                            options_push[2]=true;
+    
+                        }
+
+                        println!("possui 2\n")
                     }
                     
                     print!("\nmesmo nipe\n");
-                    options_push[4]=true;
                     
-                }else if analise[0].get_carta().0 == analise[1].get_carta().0 || analise[2].get_carta().0 == analise[1].get_carta().0{
+                }else if (analise[0].get_carta().0 == analise[1].get_carta().0 && analise[2].get_carta().1 == 2) || (analise[2].get_carta().0 == analise[1].get_carta().0 && analise[0].get_carta().1 == 2){
                     
-                    if analise[0].get_carta().1 == 2 &&
-                       (analise[2].get_carta().1 == analise[1].get_carta().1+1 || 
-                       analise[2].get_carta().1 == analise[1].get_carta().1+2) &&
-                       analise[2].get_carta().0 == analise[1].get_carta().0{
+                    if  ((analise[0].get_carta().0 == analise[1].get_carta().0) && (analise[0].get_carta().1+1 == analise[1].get_carta().1)) || ((analise[1].get_carta().0 == analise[2].get_carta().0) && (analise[1].get_carta().1+1 == analise[2].get_carta().1)){
 
-                        print!("\n2+sequencial\n");
-                        options_push[1]=true;
-                    
-                    }
-                    if (analise[1].get_carta().1 == analise[0].get_carta().1+1 || 
-                        analise[1].get_carta().1 == analise[0].get_carta().1+2) &&
-                        analise[1].get_carta().0 == analise[0].get_carta().0 && 
-                        analise[2].get_carta().1 == 2{
+                        if  (analise[0].get_carta().1 > 1 && analise[0].get_carta().0 == analise[1].get_carta().0) || (analise[1].get_carta().1 > 1 && analise[1].get_carta().0 == analise[2].get_carta().0){
 
-                        print!("\nsequencial+2\n");
-                        options_push[3]=true;
+                            println!("2 + sequence number\n");
+                            options_push[1]=true;
 
-                    }
-                    if  analise[2].get_carta().1 == analise[0].get_carta().1+2 &&
-                        analise[2].get_carta().0 == analise[0].get_carta().0 && 
-                        analise[1].get_carta().1 == 2{
+                        }
                         
-                        print!("\ncarta+2+carta\n");
+                        if  (analise[0].get_carta().1 < 13 && analise[0].get_carta().0 == analise[1].get_carta().0) || (analise[1].get_carta().1 < 13 && analise[1].get_carta().0 == analise[2].get_carta().0){
+
+                            println!("sequence number + 2\n");
+                            options_push[3]=true;
+                                
+                        }
+                        
+                    } else if ((analise[0].get_carta().0 == analise[1].get_carta().0) && (analise[0].get_carta().1+2 == analise[1].get_carta().1)) || ((analise[1].get_carta().0 == analise[2].get_carta().0) && (analise[1].get_carta().1+2 == analise[2].get_carta().1)){
+
+                        println!("number + 2 + number\n");
                         options_push[2]=true;
 
                     }
                  
-                 print!("\nnipe diferente\n");
+                    print!("\nnipe diferente\n");
                 }
-                
-                
-                /* for i in 0..3{
-
-                    if let Some(index) = self.players[index as usize].get_cards().iter().position(|x| 
-                        x.get_carta().0 == analise[i as usize].get_carta().0 &&
-                        x.get_carta().1 == analise[i as usize].get_carta().1 
-                    ) {
-                        println!("O valor {} está na posição {}", analise[i as usize], index);
-                    } else {
-                        println!("O valor {} não está no vetor", analise[i as usize]);
-                    }
-
-                    println!("{}",analise[i as usize]);
-                } */
 
                 println!("{:?}",options_push);
                 
-                if options_push[0] != true || options_push[1] != true || options_push[2] != true || options_push[3] != true || options_push[4] != true{
+                if options_push[0] == true || options_push[1] == true || options_push[2] == true || options_push[3] == true{
                     return Ok(options_push);
                 }else {
                     return Err(String::from("Este grupo de cartas não podem ir para a mesa"));
@@ -245,5 +229,35 @@ impl Jogo {
         }
 
         Err(String::from("As cartas escolhidas nao podem descer para mesa"))
+    }
+    pub fn down_3_cards(&mut self, index: u32, cards: Vec<u32>){
+        
+        let mut analise:Vec<Carta> = Vec::new();
+
+        for i in cards {
+            match self.players[index as usize].get_card(i as u32) {
+                Ok(c) => analise.push(c),
+                Err(e) => {
+                    println!("Erro: {}", e);
+                    return //Err(String::from("Erro ao pegar carta"));
+                }
+            }
+        }
+
+        analise.sort();
+        
+        for i in 0..3{
+
+            if let Some(index) = self.players[index as usize].get_cards().iter().position(|x| 
+                x.get_carta().0 == analise[i as usize].get_carta().0 &&
+                x.get_carta().1 == analise[i as usize].get_carta().1 
+            ) {
+                println!("O valor {} está na posição {}", analise[i as usize], index);
+            } else {
+                println!("O valor {} não está no vetor", analise[i as usize]);
+            }
+
+            println!("{}",analise[i as usize]);
+        }
     }
 }

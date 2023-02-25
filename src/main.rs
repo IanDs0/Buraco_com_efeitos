@@ -53,12 +53,11 @@ fn main() {
     let mut entrada: String = String::new();
     let mut array: Vec<u32> = Vec::new();
                                     
-    let mut encontro: [bool; 5] = [
+    let mut encontro: [bool; 4] = [
         false,//sequence number
         false,//2 + sequence number
         false,//number + 2 + number
         false,//sequence number + 2
-        false//diferent nipe
     ];
     
     for _ in 0..3{
@@ -70,15 +69,35 @@ fn main() {
         entrada.clear();
     }
 
-    encontro = match jogo.down_3_cards_letter(0, array){
-        Ok(jogo) => jogo,
+    match jogo.down_3_cards_letter(0, array){
+        Ok(jogo) => {
+            
+            println!("Deseja inserir as cartas em qual forma?");
+
+            if jogo[0] == true{
+                println!("Em sequencia!");
+            }
+            if jogo[1] == true{
+                println!("Coringa no inicio!");
+            }
+            if jogo[2] == true{ 
+                println!("Coringa no meio!");
+            }
+            if jogo[3] == true{
+                println!("Coringa no fim!");
+            }
+
+
+
+            return;
+        },
         Err(e) => {
             println!("Erro: {}", e);
             return;
         }
     };
 
-    println!("{:?}",encontro);
+    // println!("{:?}",encontro);
 
     // jogo.players[0].print_user();
     

@@ -9,6 +9,7 @@ pub struct User{
     hp: u16,
     cards: Vec<Carta>,
     lixo: Vec<Carta>,
+    pub mesa: Vec<Vec<Carta>>
 }
 
 impl User{
@@ -19,6 +20,7 @@ impl User{
             hp: 0,
             cards: Vec::new(),
             lixo: Vec::new(),
+            mesa: Vec::new(),
         }
     }
     
@@ -30,7 +32,6 @@ impl User{
         Self::set_card(self, cards);
         Self::set_lixo(self, lixo);
     }
-
     pub fn get_user(&self) -> (String, i32, u16, Vec<Carta>, Vec<Carta>) {
         (
             self.get_name(),
@@ -40,7 +41,6 @@ impl User{
             self.get_lixo()
         )
     }
-
     pub fn print_user(&self){
         println!("Name: {}", self.name);
         println!("Points: {}", self.points);
@@ -118,7 +118,6 @@ impl User{
         }
         Err(String::from("indice escolhido invalido"))
     }
-
     pub fn print_card(&self){
         for (i,card) in self.cards.iter().enumerate(){
             println!("{}->{:?}", i, card.get_carta());
@@ -133,4 +132,15 @@ impl User{
         self.name.to_string()
     }
 
+    //Mesa
+    pub fn set_new_table(&mut self, new_table: Vec<Carta>){
+        self.mesa.push(new_table);
+    }
+    pub fn add_card_table(&mut self, local: bool, mesa: u32, card: Carta){
+        if local{
+            self.mesa[mesa as usize].push(card);
+        }else{
+            self.mesa[mesa as usize].insert(0,card);
+        }
+    }
 }
